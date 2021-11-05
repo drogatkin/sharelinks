@@ -1,0 +1,14 @@
+ <div class="form_header">@label.title@</div>
+
+<table><tr><th>@label.id@</th>
+<th>@label.name@</th>
+<th>@label.link@</th>
+<th>@label.description@</th>
+</tr>
+     @model(<tr>
+<td>@element.get*(ID)*@</td>
+<td>@element.get*(NAME)*@</td>
+<td>@element.get*(LINK)*@</td>
+<td>@element.get*(DESCRIPTION)*@</td>
+</tr>)@
+    </table>
