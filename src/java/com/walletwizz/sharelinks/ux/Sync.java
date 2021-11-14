@@ -18,10 +18,7 @@ import com.walletwizz.sharelinks.model.SharelinksModel;
 
 public class Sync extends Conversational<Stream<link>, Stream<link>, SharelinksModel> {
 	
-	protected Stream<link> exchange(Stream<link> ask) {
-		return null;	
-		}
-	
+	@Override
 	protected Stream<link> readModel() {
 		Stream.Builder<link> builder = Stream.builder();
 		try( JsonReader jsonReader =  Json.createReader(
@@ -40,9 +37,11 @@ public class Sync extends Conversational<Stream<link>, Stream<link>, SharelinksM
 		return builder.build();
 	}
 	
+	@Override
 	protected Stream<link> process(Stream<link> ask) {
 		ask.forEach(l -> {
 			DODelegator<link> sdo1 = new DODelegator<>(l);
+			log("Link: %s", null, l);
 			try {
 				if(l.id == 0) {
 					getAppModel().getDOService().addObject(sdo1);
