@@ -7,7 +7,7 @@
 </tr>
      @model(<tr>
 <td>@element.get*(ID)*@</td>
-<td>@element.get*(NAME)*@</td>
+<td><a href="@.element.get*(LINK)*@" target="_blank">@element.get*(NAME)*@</a></td><!--  check if encoding required -->
 <td>@element.get*(LINK)*@</td>
 <td>@element.get*(DESCRIPTION)*@</td>
 </tr>)@

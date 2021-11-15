@@ -22,7 +22,7 @@ public class link extends SimpleCoordinator<SharelinksModel> {
 	public long id;
 	
 	@DBField(index = true)
-	
+	@FormField(formFieldName="global_id")
 	public long sync_id;
 
 	@DBField(size = 200)
@@ -30,7 +30,7 @@ public class link extends SimpleCoordinator<SharelinksModel> {
 	public String name;
 	
 	@DBField(size = 200)
-	@FormField()
+	@FormField(formFieldName="url")
 	public String link;
 
 	@DBField(size = 4000)
