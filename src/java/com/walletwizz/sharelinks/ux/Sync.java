@@ -1,6 +1,8 @@
 package com.walletwizz.sharelinks.ux;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Stream;
 //import java.util.stream.builder;
 import java.io.InputStreamReader;
@@ -9,6 +11,7 @@ import javax.json.JsonArray;
 import javax.json.Json;
 
 import org.aldan3.util.DataConv;
+import org.aldan3.util.Sql;
 import org.aldan3.data.DODelegator;
 import org.aldan3.model.ProcessException;
 
@@ -45,6 +48,7 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 			DODelegator<link> sdo1 = new DODelegator<>(l);
 			log("Link: %s", null, l);
 			try {
+				l.updated_date = new Date();
 				if(l.sync_id == 0) { // it seems the item never was synchronized
 					l.sync_id = l.id ;
 					getAppModel().getDOService().addObject(sdo1, "id");
@@ -60,6 +64,18 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 				log("", pe);
 			}
 		});
+		// is there modified since?
+		long modifiedSince = req.getDateHeader("If-Modified-Since");
+		if (modifiedSince > -1) {
+			try {
+				Collection<DODelegator<link>> records = getAppModel().getDOService().getObjectsByQuery("select name,description,updated_date,id from link where updated_date > "
+			+Sql.toSqlValue(new Date(modifiedSince), getAppModel()
+					.getDOService().getInlineDatePattern()), 0, -1, () -> new DODelegator<>(new link(getAppModel())));
+			} catch (ProcessException e) {
+				log("", e);
+			}
+		}
+		
 		
 		return result.toArray(DODelegator[]::new);	
 		}
