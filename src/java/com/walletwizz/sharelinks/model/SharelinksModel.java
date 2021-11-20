@@ -3,14 +3,16 @@
 // TODO modify the file for the application purpose
 package com.walletwizz.sharelinks.model;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 import org.aldan3.data.DOService;
 import org.aldan3.model.Log;
 
 import com.beegman.webbee.model.AppModel;
 import com.beegman.webbee.model.Auth;
+import com.beegman.buzzbee.NotifServ;
 import com.beegman.webbee.base.BaseBehavior;
-
 import com.walletwizz.sharelinks.model.util.SharelinksBehavior;
 public class SharelinksModel extends AppModel {
 
@@ -49,6 +51,13 @@ public class SharelinksModel extends AppModel {
 	@Override
 	protected void initServices() {
 		super.initServices();
+		register(new NotifServ().init(new Properties(), this).start());
+	}
+	
+	@Override
+	protected void deactivateServices() {
+		super.deactivateServices();
+		((NotifServ) unregister(getService(NotifServ.class.getName()))).destroy();
 	}
 
 }
