@@ -12,35 +12,37 @@ import javax.json.Json;
 
 import org.aldan3.util.DataConv;
 import org.aldan3.util.Sql;
+import org.aldan3.annot.Inject;
 import org.aldan3.data.DODelegator;
 import org.aldan3.model.ProcessException;
 
+import com.beegman.buzzbee.NotifServ;
+import com.beegman.buzzbee.NotifServ.NotifException;
+import com.beegman.buzzbee.WebEvent;
 import com.beegman.webbee.block.Conversational;
 import com.walletwizz.sharelinks.model.link;
 
 import com.walletwizz.sharelinks.model.SharelinksModel;
 
 public class Sync extends Conversational<Stream<link>, DODelegator<link>[], SharelinksModel> {
-	
+
 	@Override
 	protected Stream<link> readModel() {
 		Stream.Builder<link> builder = Stream.builder();
-		try( JsonReader jsonReader =  Json.createReader(
-				new InputStreamReader(req.getInputStream(), DataConv.ifNull(getEncoding(), "utf-8")))) {
+		try (JsonReader jsonReader = Json
+				.createReader(new InputStreamReader(req.getInputStream(), DataConv.ifNull(getEncoding(), "utf-8")))) {
 			JsonArray array = jsonReader.readArray();
-			
-			 for (int i = 0, size = array.size(); i < size; i++)
-			    {
-			      builder.accept((link)fillPojo(new link(getAppModel()), array.getJsonObject(i)));
-			    }
-			
-		
-		} catch(Exception e) {
-			
+
+			for (int i = 0, size = array.size(); i < size; i++) {
+				builder.accept((link) fillPojo(new link(getAppModel()), array.getJsonObject(i)));
+			}
+
+		} catch (Exception e) {
+
 		}
 		return builder.build();
 	}
-	
+
 	@Override
 	protected DODelegator<link>[] process(Stream<link> ask) {
 		ArrayList<DODelegator<link>> result = new ArrayList<>();
@@ -49,35 +51,56 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 			log("Link: %s", null, l);
 			try {
 				l.updated_date = new Date();
-				if(l.sync_id == 0) { // it seems the item never was synchronized
-					l.sync_id = l.id ;
+				if (l.sync_id == 0) { // it seems the item never was synchronized
+					l.sync_id = l.id;
 					getAppModel().getDOService().addObject(sdo1, "id");
 					log("Added with: %d for %d", null, sdo1.get("id"), l.sync_id);
-					//l.name += " from web";
+					// l.name += " from web";
 					result.add(sdo1);
 				} else {
 					l.id = l.sync_id;
 					getAppModel().getDOService().updateObjectsLike(new DODelegator<link>(l, null, "", "id"), sdo1);
 				}
-					
+				// notify web we have some changes
+				sendNote();
 			} catch (ProcessException pe) {
 				log("", pe);
 			}
 		});
 		// is there modified since?
 		long modifiedSince = req.getDateHeader("If-Modified-Since");
+
 		if (modifiedSince > -1) {
 			try {
-				Collection<DODelegator<link>> records = getAppModel().getDOService().getObjectsByQuery("select name,description,updated_date,id from link where updated_date > "
-			+Sql.toSqlValue(new Date(modifiedSince), getAppModel()
-					.getDOService().getInlineDatePattern()), 0, -1, () -> new DODelegator<>(new link(getAppModel())));
+				Collection<DODelegator<link>> records = getAppModel().getDOService().getObjectsByQuery(
+						"select name,description,updated_date,id from link where updated_date > " + Sql.toSqlValue(
+								new Date(modifiedSince), getAppModel().getDOService().getInlineDatePattern()),
+						0, -1, () -> new DODelegator<>(new link(getAppModel())));
+				log("Interested in %d changes since: %d", null, records != null ? records.size() : -1, modifiedSince);
+				for (DODelegator<link> l : records) {
+					link link = l.getPrincipal();
+					link.id = link.sync_id;
+					result.add(l);
+				}
 			} catch (ProcessException e) {
 				log("", e);
 			}
 		}
-		
-		
-		return result.toArray(DODelegator[]::new);	
+
+		return result.toArray(DODelegator[]::new);
+	}
+
+	@Inject
+	NotifServ ns;
+
+	void sendNote() {
+		try {
+			if (ns != null)
+				ns.publish(new WebEvent().setAction("refreshPrev").setAttributes(getProperties().getProperty("ResId"))
+						.setId(getProperties().getProperty("ResId")));
+		} catch (NotifException e) {
+			log("error in publish %s", e, getProperties().getProperty("ResId"));
 		}
+	}
 
 }
