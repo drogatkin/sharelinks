@@ -96,10 +96,10 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 	void sendNote() {
 		try {
 			if (ns != null)
-				ns.publish(new WebEvent().setAction("refreshPrev").setAttributes(getProperties().getProperty("ResId"))
-						.setId(getProperties().getProperty("ResId")));
+				ns.publish(new WebEvent().setAction("refreshList").setAttributes(getProperties().getProperty(SharelinksModel.NOTIF_CHANNEL))
+						.setId(getProperties().getProperty(SharelinksModel.NOTIF_CHANNEL)));
 		} catch (NotifException e) {
-			log("error in publish %s", e, getProperties().getProperty("ResId"));
+			log("error in publish %s", e, getProperties().getProperty(SharelinksModel.NOTIF_CHANNEL));
 		}
 	}
 

@@ -6,16 +6,20 @@ package com.walletwizz.sharelinks.model;
 import java.util.Properties;
 
 import javax.sql.DataSource;
-import org.aldan3.data.DOService;
-import org.aldan3.model.Log;
 
-import com.beegman.webbee.model.AppModel;
-import com.beegman.webbee.model.Auth;
+import org.aldan3.data.DOService;
+
 import com.beegman.buzzbee.NotifServ;
 import com.beegman.webbee.base.BaseBehavior;
+import com.beegman.webbee.model.AppModel;
 import com.walletwizz.sharelinks.model.util.SharelinksBehavior;
+
 public class SharelinksModel extends AppModel {
 
+	public static final String NOTIF_CHANNEL = "ResId";
+	
+	public static NotifServ notifService;
+	
 	@Override
 	public String getAppName() {
 		return "Sharelinks";
@@ -52,12 +56,14 @@ public class SharelinksModel extends AppModel {
 	protected void initServices() {
 		super.initServices();
 		register(new NotifServ().init(new Properties(), this).start());
+		notifService = getService(NotifServ.class); // for websocket endpoint
 	}
 	
 	@Override
 	protected void deactivateServices() {
 		super.deactivateServices();
 		((NotifServ) unregister(getService(NotifServ.class.getName()))).destroy();
+		notifService =  null;
 	}
 
 }
