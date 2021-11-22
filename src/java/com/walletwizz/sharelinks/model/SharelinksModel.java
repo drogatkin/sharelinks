@@ -9,9 +9,17 @@ import javax.sql.DataSource;
 
 import org.aldan3.data.DOService;
 
+<<<<<<< HEAD
+=======
+import com.beegman.webbee.model.AppModel;
+import com.beegman.webbee.model.Auth;
+>>>>>>> branch 'master' of https://github.com/drogatkin/sharelinks.git
 import com.beegman.buzzbee.NotifServ;
 import com.beegman.webbee.base.BaseBehavior;
+<<<<<<< HEAD
 import com.beegman.webbee.model.AppModel;
+=======
+>>>>>>> branch 'master' of https://github.com/drogatkin/sharelinks.git
 import com.walletwizz.sharelinks.model.util.SharelinksBehavior;
 
 public class SharelinksModel extends AppModel {
@@ -56,6 +64,7 @@ public class SharelinksModel extends AppModel {
 	protected void initServices() {
 		super.initServices();
 		register(new NotifServ().init(new Properties(), this).start());
+<<<<<<< HEAD
 		notifService = getService(NotifServ.class); // for websocket endpoint
 	}
 	
@@ -64,6 +73,14 @@ public class SharelinksModel extends AppModel {
 		super.deactivateServices();
 		((NotifServ) unregister(getService(NotifServ.class.getName()))).destroy();
 		notifService =  null;
+=======
+	}
+	
+	@Override
+	protected void deactivateServices() {
+		super.deactivateServices();
+		((NotifServ) unregister(getService(NotifServ.class.getName()))).destroy();
+>>>>>>> branch 'master' of https://github.com/drogatkin/sharelinks.git
 	}
 
 }
