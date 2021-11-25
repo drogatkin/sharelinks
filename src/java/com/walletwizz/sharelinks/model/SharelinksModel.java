@@ -19,7 +19,7 @@ import com.walletwizz.sharelinks.model.util.SharelinksBehavior;
 
 public class SharelinksModel extends AppModel {
 
-	public static final String NOTIF_CHANNEL = "ResId";
+	public static final String NOTIF_CHANNEL = "Channel";
 	
 	public static NotifServ notifService;
 	
