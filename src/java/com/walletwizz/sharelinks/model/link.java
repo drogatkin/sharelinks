@@ -41,13 +41,16 @@ public class link extends SimpleCoordinator<SharelinksModel> {
 	@DBField
 	public Date updated_date;
 	
+	@DBField(size=160)
+	public String  updated_by;
+	
 	@DBField
 	public Date end_date;
 
 	@Override
 	public String toString() {
 		return "link [id=" + id + ", sync_id=" + sync_id + ", name=" + name + ", link=" + link + ", description="
-				+ description + ", updated_date=" + updated_date + ", end_date=" + end_date + "]";
+				+ description + ", updated_date=" + updated_date + " / " + updated_by + ", end_date=" + end_date + "]";
 	}
 
 }

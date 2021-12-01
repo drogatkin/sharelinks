@@ -46,8 +46,10 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 	@Override
 	protected DODelegator<link>[] process(Stream<link> ask) {
 		ArrayList<DODelegator<link>> result = new ArrayList<>();
+		String by = userAgent.length() > "mobile:android:".length() ? userAgent.substring("mobile:android:".length()) : "undefined";
 		ask.forEach(l -> {
 			DODelegator<link> sdo1 = new DODelegator<>(l);
+			l.updated_by = by;
 			log("Link: %s", null, l);
 			try {
 				l.updated_date = new Date();
@@ -73,7 +75,7 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 		if (modifiedSince > -1) {
 			try {
 				Collection<DODelegator<link>> records = getAppModel().getDOService().getObjectsByQuery(
-						"select name,description,updated_date,id from link where updated_date > " + Sql.toSqlValue(
+						"select name,description,updated_date,id,updated_by from link where updated_date > " + Sql.toSqlValue(
 								new Date(modifiedSince), getAppModel().getDOService().getInlineDatePattern()),
 						0, -1, () -> new DODelegator<>(new link(getAppModel())));
 				log("Interested in %d changes since: %d", null, records != null ? records.size() : -1, modifiedSince);
