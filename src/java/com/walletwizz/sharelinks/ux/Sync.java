@@ -75,14 +75,17 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 		if (modifiedSince > -1) {
 			try {
 				Collection<DODelegator<link>> records = getAppModel().getDOService().getObjectsByQuery(
-						"select name,description,updated_date,id,updated_by from link where updated_date > " + Sql.toSqlValue(
-								new Date(modifiedSince), getAppModel().getDOService().getInlineDatePattern()),
+						"select name,description,updated_date,id,updated_by,link,sync_id from link where updated_date > " + Sql.toSqlValue(
+								new Date(modifiedSince), getAppModel().getDOService().getInlineDatePattern()) + " and updated_by <> '" + Sql.escapeQuote(by) + "' and updated_by is not null",
 						0, -1, () -> new DODelegator<>(new link(getAppModel())));
 				log("Interested in %d changes since: %d", null, records != null ? records.size() : -1, modifiedSince);
 				for (DODelegator<link> l : records) {
 					link link = l.getPrincipal();
-					link.id = link.sync_id;
+					//link.id = link.sync_id;
+					//link.sync_id = link.id;
+					link.sync_id = 0;
 					result.add(l);
+					//log("Added %s", null, l);
 				}
 			} catch (ProcessException e) {
 				log("", e);

@@ -38,10 +38,10 @@ public class link extends SimpleCoordinator<SharelinksModel> {
 	@FormField(presentSize = 68, presentRows = 6)
 	public String description;
 
-	@DBField
+	@DBField(index=true)
 	public Date updated_date;
 	
-	@DBField(size=160)
+	@DBField(size=160, index=true)
 	public String  updated_by;
 	
 	@DBField

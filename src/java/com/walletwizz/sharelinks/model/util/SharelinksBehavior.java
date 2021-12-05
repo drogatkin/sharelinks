@@ -19,6 +19,6 @@ public class SharelinksBehavior extends BaseBehavior<SharelinksModel> {
 		String userAgent = req.getHeader("user-agent");
 
 		return "mobile:android".equals(userAgent) || "mobile:ios".equals(userAgent)
-				|| "mobile:windows".equals(userAgent) || (userAgent != null && userAgent.startsWith("android:"));
+				|| "mobile:windows".equals(userAgent) || (userAgent != null && userAgent.startsWith("mobile:"));
 	}
 }
