@@ -43,6 +43,11 @@ public class SharelinksModel extends AppModel {
 		     protected int getInsertUpdateVariant() {
 		          return 2;
 		     }
+                     
+                     @Override
+                     protected String modifyColumn () {
+                 		return " ALTER ";
+                 	}
 
                 };
         }

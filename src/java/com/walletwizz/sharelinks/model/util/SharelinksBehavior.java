@@ -1,4 +1,4 @@
-// Webbee (C) 2016 Dmitriy Rogatkin
+// Webbee (C) 2016-2022 Dmitriy Rogatkin
 ///////   application common behavior class   //////////
 // TODO modify the file for the application behavior purpose
 package com.walletwizz.sharelinks.model.util;
@@ -18,7 +18,6 @@ public class SharelinksBehavior extends BaseBehavior<SharelinksModel> {
     public boolean isMobileApp(HttpServletRequest req) {
 		String userAgent = req.getHeader("user-agent");
 
-		return "mobile:android".equals(userAgent) || "mobile:ios".equals(userAgent)
-				|| "mobile:windows".equals(userAgent) || (userAgent != null && userAgent.startsWith("mobile:"));
+		return (userAgent != null && userAgent.startsWith("mobile:"));
 	}
 }

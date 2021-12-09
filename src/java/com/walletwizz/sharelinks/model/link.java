@@ -29,7 +29,7 @@ public class link extends SimpleCoordinator<SharelinksModel> {
 	@FormField()
 	public String name;
 	
-	@DBField(size = 200)
+	@DBField(size = 508,unique=true)
 	//@FormField(formFieldName="url")
 	@FormField
 	public String link;
