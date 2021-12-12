@@ -1,10 +1,8 @@
 function wsinit(ur) {
 	//console.log('WSAPI initialized as '+ WSAPI)
 	// alert('extra for '+ctx+' and '+WSAPI)
-	// TODO change parameters to pass context name
 	WSAPI.init(ur, "refresh", sub_to_refresh)
 //	WSAPI.addListener('newdata', updatelist)
-	
 }
 
 function sub_to_refresh() {
@@ -19,4 +17,35 @@ function refreshList() {
 function extra_actions(s, ctx) {
 	// location.host
 	wsinit('ws'+s+'://'+location.hostname+':'+location.port+ctx)
+	const node = document.getElementById('search');
+    node.addEventListener('keydown', function onEvent(event) {
+	    if (event.key === "Enter") {
+		    search_link(node.value)
+	        return false;
+	    }
+    })
+}
+
+function search_link(s) {
+	var tab = document.querySelector('#links')
+	var mark
+	for (var i = 0, row; row = tab.rows[i]; i++) {
+		mark = 0
+		if (s != '')
+	       for (var j = 0, col; col = row.cells[j]; j++) {
+		       if (col.nodeName === 'TH')
+                   break
+	           if (col.innerHTML.includes(s) ) {
+		              //console.log(col.innerHTML)
+                      mark = 0
+		              break
+	           } else {
+		          mark = 1
+	           }
+	       }  
+       if (mark)
+           row.style.display = 'none'
+       else
+          row.style.display = ''
+    }
 }

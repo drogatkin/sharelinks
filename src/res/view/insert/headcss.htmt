@@ -1,0 +1,7 @@
+table#links  tr:nth-child(even) {background-color: #f2f2f2;}
+
+table#links  th {font-size: 1.50em;}
+
+.shrinked {white-space: nowrap;
+overflow: hidden; display: block;
+text-overflow: ellipsis; width:316pt}

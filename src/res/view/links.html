@@ -1,6 +1,6 @@
  <div class="form_header">@label.title@</div>
 
-<table><tr><th>@label.id@</th>
+<table id="links"><tr><th>@label.id@</th>
 <th>@label.name@</th>
 <th>@label.link@</th>
 <th>@label.description@</th>
@@ -8,7 +8,7 @@
      @model(<tr>
 <td>@element.get*(ID)*@</td>
 <td><a href="@.element.get*(LINK)*@" target="_blank">@element.get*(NAME)*@</a></td><!--  check if encoding required -->
-<td>@element.get*(LINK)*@</td>
+<td class="shrinked">@element.get*(LINK)*@</td>
 <td>@element.get*(DESCRIPTION)*@</td>
 </tr>)@
     </table>
