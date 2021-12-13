@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 //import java.util.stream.builder;
 import java.io.InputStreamReader;
 import javax.json.JsonReader;
+import javax.servlet.ServletException;
 import javax.json.JsonArray;
 import javax.json.Json;
 
@@ -109,6 +110,17 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 		} catch (NotifException e) {
 			log("error in publish %s", e, getProperties().getProperty(SharelinksModel.NOTIF_CHANNEL));
 		}
+	}
+	
+	@Override
+	protected boolean isAllowed(boolean override) throws ServletException {
+		String token = getConfigValue("s_token", null);
+		if (token == null || token.trim().isBlank())
+			return true;
+		String ah = req.getHeader("Authorization");
+		if (ah == null || ah.isBlank() || !ah . startsWith("s_token "))
+			return false;
+		return token.equals(ah.substring(8)); // "s_token ".length()
 	}
 
 }
