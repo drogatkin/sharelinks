@@ -62,7 +62,7 @@ public class SharelinksModel extends AppModel {
 		super.initServices();
 		register(notifService = new NotifServ().init(new Properties(), this).start());
 		//notifService = getService(NotifServ.class); // for websocket endpoint
-		System.out.printf("init service %s%n", notifService);
+		//System.out.printf("init service %s%n", notifService);
 	}
 	
 	@Override

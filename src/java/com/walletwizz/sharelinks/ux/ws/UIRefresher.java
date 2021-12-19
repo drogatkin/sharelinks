@@ -51,23 +51,13 @@ public class UIRefresher extends NotifEndPoint {
 			try {
 				switch(mes.op) {
 				case "subscribe":
-					if (!notifIds.contains(mes.id)) {
-						ns.subscribe(mes.id, this);
-						notifIds.add(mes.id);
-						LogImpl.log.debug("Subscribed to %s", mes.id);
+					if (!notifIds.contains(servName)) {
+						ns.subscribe(servName, this);
+						notifIds.add(servName);
+						LogImpl.log.debug("Subscribed to %s", servName);
 					}
 					break;
-				case "notify":
-					ns.publish(build(mes.id, (JsonObject)mes.data), this);
-					break;
-				case "retain":
-					ns.publishRetain(build(mes.id, (JsonObject)mes.data), this);
-					break;
-				case "clear":
-					ns.publishAndForget(build(mes.id, (JsonObject)mes.data), this);										
-					break;
 				}
-				LogImpl.log.debug("Notification  %s has published", mes);
 			} catch (NotifException e) {
 				LogImpl.log.error(e, "");
 			}
