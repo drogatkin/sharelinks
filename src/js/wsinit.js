@@ -35,11 +35,11 @@ function extra_actions(s, ctx) {
 function search_link(s,ci) {
 	var tab = document.querySelector('#links')
 	var mark
-	if (!!ci && s != '')
+	if (!!ci && s)
 	    s = s.toLowerCase()
 	for (var i = 0, row; row = tab.rows[i]; i++) {
 		mark = 0
-		if (s != '')
+		if (s)
 	       for (var j = 0, col; col = row.cells[j]; j++) {
 		       if (col.nodeName === 'TH')
                    break
