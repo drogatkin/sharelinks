@@ -17,8 +17,8 @@ import org.aldan3.annot.Inject;
 import org.aldan3.data.DODelegator;
 import org.aldan3.model.ProcessException;
 
-import com.beegman.buzzbee.NotifServ;
-import com.beegman.buzzbee.NotifServ.NotifException;
+import com.beegman.buzzbee.NotificationService;
+import com.beegman.buzzbee.NotificationService.NotifException;
 import com.beegman.buzzbee.WebEvent;
 import com.beegman.webbee.block.Conversational;
 import com.walletwizz.sharelinks.model.link;
@@ -97,7 +97,7 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 	}
 
 	@Inject
-	NotifServ ns;
+	NotificationService ns;
 
 	void sendNote() {
 		ns = SharelinksModel.notifService;

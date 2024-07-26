@@ -16,7 +16,7 @@ function refreshList() {
 
 function update_search() {
 	const node = document.getElementById('search')
-	if (node.value != '')
+	if (node.value)
 		search_link(node.value,true)
 }
 

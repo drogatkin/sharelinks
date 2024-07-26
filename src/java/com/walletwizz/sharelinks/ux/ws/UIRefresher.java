@@ -19,7 +19,7 @@ import javax.json.JsonReader;
 import javax.json.JsonValue;
 
 import com.beegman.buzzbee.LogImpl;
-import com.beegman.buzzbee.NotifServ.NotifException;
+import com.beegman.buzzbee.NotificationService.NotifException;
 import com.beegman.buzzbee.WebEvent;
 import com.beegman.buzzbee.web.NotifEndPoint;
 import com.walletwizz.sharelinks.model.SharelinksModel;

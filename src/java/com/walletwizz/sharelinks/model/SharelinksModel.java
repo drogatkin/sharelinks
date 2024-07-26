@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 
 import org.aldan3.data.DOService;
 
-import com.beegman.buzzbee.NotifServ;
+import com.beegman.buzzbee.NotificationServiceImpl;
 import com.beegman.webbee.base.BaseBehavior;
 import com.beegman.webbee.model.AppModel;
 import com.walletwizz.sharelinks.model.util.SharelinksBehavior;
@@ -18,7 +18,7 @@ public class SharelinksModel extends AppModel {
 
 	public static final String NOTIF_CHANNEL = "Channel";
 	
-	public static NotifServ notifService;
+	public static NotificationServiceImpl notifService;
 	
 	@Override
 	public String getAppName() {
@@ -60,7 +60,7 @@ public class SharelinksModel extends AppModel {
 	@Override
 	protected void initServices() {
 		super.initServices();
-		register(notifService = new NotifServ().init(new Properties(), this).start());
+		register(notifService = new NotificationServiceImpl().init(new Properties(), this).start());
 		//notifService = getService(NotifServ.class); // for websocket endpoint
 		//System.out.printf("init service %s%n", notifService);
 	}
@@ -68,7 +68,7 @@ public class SharelinksModel extends AppModel {
 	@Override
 	protected void deactivateServices() {
 		super.deactivateServices();
-		((NotifServ) unregister(getService(notifService.getPreferredServiceName()))).destroy();
+		((NotificationServiceImpl) unregister(getService(notifService.getPreferredServiceName()))).destroy();
 		notifService =  null;
 	}
 
