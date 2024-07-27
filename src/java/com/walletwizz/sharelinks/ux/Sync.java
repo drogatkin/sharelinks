@@ -39,7 +39,7 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 			}
 
 		} catch (Exception e) {
-
+             log("", e);
 		}
 		return builder.build();
 	}
@@ -54,15 +54,20 @@ public class Sync extends Conversational<Stream<link>, DODelegator<link>[], Shar
 			log("Link: %s", null, l);
 			try {
 				l.updated_date = new Date();
+				// TODO use db add or update
 				if (l.sync_id == 0) { // it seems the item never was synchronized
 					l.sync_id = l.id;
 					getAppModel().getDOService().addObject(sdo1, "id");
-					log("Added with: %d for %d", null, sdo1.get("id"), l.sync_id);
+					log("Added with: %d for %d%n", null, sdo1.get("id"), l.sync_id);
 					// l.name += " from web";
 					result.add(sdo1);
 				} else {
 					l.id = l.sync_id;
-					getAppModel().getDOService().updateObjectsLike(new DODelegator<link>(l, null, "", "id"), sdo1);
+					if (0 == getAppModel().getDOService().updateObjectsLike(new DODelegator<link>(l, null, "", "id"), sdo1)) {
+					    // could be a broken synchronisation, try to insert intead
+					    getAppModel().getDOService().addObject(sdo1, "id");
+					    //throw new ProcessException("No record with id " + l.id + " in db");
+					}
 				}
 				// notify web we have some changes
 				sendNote();
