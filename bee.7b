@@ -239,8 +239,13 @@ target war {
    -B WEB-INF/lib,${aldan3_home}${~/~}build${~/~}aldan3.jar,
    -B WEB-INF/lib,${aldan3_home}-jdo${~/~}build${~/~}aldan3-jdo.jar,
    -B WEB-INF/lib,${webbee},
+   # custom libs
+   -B WEB-INF/lib,${buzzbee},
+   -B WEB-INF/lib,.temp_repo${~/~}${JSON_API_LIB_JAR},
+   -B WEB-INF/lib,.temp_repo${~/~}${JDBC_DRIVER_JAR},
+   
    -B WEB-INF/config,src${~/~}res${~/~}cfg${~/~}*.properties, 
-   -B WEB-INF, src${~/~}res${~/~}cfg${~/~}context.xml,
+   -B META-INF, src${~/~}res${~/~}cfg${~/~}context.xml,
    -C WEB-INF/res/view,src${~/~}res${~/~}view${~/~}*.html,
    -C WEB-INF/res/view,src${~/~}res${~/~}view${~/~}*.txt,
    -C WEB-INF/res/view,src${~/~}res${~/~}view${~/~}*.htm,
@@ -263,8 +268,8 @@ target war {
    -B sound,src${~/~}res${~/~}sound${~/~}*.ogg,
    -B js,src${~/~}3rd_party${~/~}ace${~/~}*.js,
    # merging webbee
-   -B WEB-INF/text,${webbee_home}${~/~}src${~/~}res${~/~}text${~/~}*.properties,
-   -C WEB-INF/view,${webbee_home}${~/~}src${~/~}res${~/~}template${~/~}*.htmt,
+   -B WEB-INF/res/text,${webbee_home}${~/~}src${~/~}res${~/~}text${~/~}*.properties,
+   -C WEB-INF/res/view,${webbee_home}${~/~}src${~/~}res${~/~}template${~/~}*.htmt,
    -B js,${webbee_home}${~/~}src${~/~}js${~/~}*.js,
    -B css,${webbee_home}${~/~}src${~/~}res${~/~}css${~/~}*.css,
    -B image,${webbee_home}${~/~}src${~/~}res${~/~}image${~/~}*.gif
