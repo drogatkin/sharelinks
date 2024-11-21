@@ -1,9 +1,12 @@
 # a rustbee script to build a webbee based app 
-# it requires RustBee v 1.12.03 or better
+# it requires RustBee v 1.12.05 or better
 
 project =sharelinks
  domain =com
 org=walletwizz
+
+# cusum CP libs
+buzzbee=../Buzzbee/build/buzzbee.jar
 
 "build_directory" = ./build
 source_directory ="src/java"
@@ -30,13 +33,7 @@ JSON_API_LIB="org.glassfish:javax.json:1.1.4":rep-maven
 websocket_api="javax.websocket:javax.websocket-api:1.1":rep-maven
 servlet_api="javax.servlet:javax.servlet-api:4.0.1":rep-maven
 
-JSON_API_LIB_JAR=none
-JDBC_DRIVER_JAR=none
-
-websocket jar=none
-servlet jar=none
-
-cp=.temp_repo${~/~}${servlet jar}${~path_separator~}.temp_repo${~/~}${websocket jar}${~path_separator~}${aldan3}${~path_separator~}${aldan3-jdo}${~path_separator~}${webbee}${~path_separator~}${build_directory}
+cp=.temp_repo${~/~}${JSON_API_LIB_JAR}${~path_separator~}.temp_repo${~/~}${servlet jar}${~path_separator~}.temp_repo${~/~}${websocket jar}${~path_separator~}${aldan3}${~path_separator~}${aldan3-jdo}${~path_separator~}${webbee}${~path_separator~}${buzzbee}${~path_separator~}${build_directory}
 
 # Main block execution
 as_jar(JSON_API_LIB)
@@ -164,7 +161,7 @@ target compile:. {
    assign(main src,~~)
    if {
        or (main src) then {
-       display(Compiling Java src ... )
+       display(Compiling Java src ${cp}... )
            exec javac (
              -d,
              ${build_directory},
@@ -254,16 +251,16 @@ target war {
    -B, src${~/~}res${~/~}html${~/~}*.jsp,
    -B, src${~/~}res${~/~}html${~/~}*.html,
    -B image,src${~/~}3rd_party${~/~}image${~/~}*.gif,
-   -B image,src${~/~}image${~/~}*.png,
-   -B image,src${~/~}image${~/~}*.jpg,
-   -B,src${~/~}image${~/~}favicon.ico,
+   -B image,src${~/~}res${~/~}image${~/~}*.png,
+   -B image,src${~/~}res${~/~}image${~/~}*.jpg,
+   -B,src${~/~}res${~/~}image${~/~}favicon.ico,
    -B js,src${~/~}js${~/~}*.js,
-   -B css,src${~/~}html${~/~}style.css,
-   -B,src${~/~}html${~/~}*.html,
-   -B,src${~/~}html${~/~}*.jsp,
-   -B,src${~/~}html${~/~}*.json,
+   -B css,src${~/~}res${~/~}css${~/~}*.css,
+   -B,src${~/~}res${~/~}html${~/~}*.html,
+   -B,src${~/~}res${~/~}html${~/~}*.jsp,
+   -B,src${~/~}res${~/~}html${~/~}*.json,
    -B js,src/3rd_party/js/*.js,
-   -B sound,src${~/~}sound${~/~}*.ogg,
+   -B sound,src${~/~}res${~/~}sound${~/~}*.ogg,
    -B js,src${~/~}3rd_party${~/~}ace${~/~}*.js,
    # merging webbee
    -B WEB-INF/text,${webbee_home}${~/~}src${~/~}res${~/~}text${~/~}*.properties,
