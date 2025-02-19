@@ -274,7 +274,8 @@ target war {
    -B css,${webbee_home}${~/~}src${~/~}res${~/~}css${~/~}*.css,
    -B image,${webbee_home}${~/~}src${~/~}res${~/~}image${~/~}*.gif
    )
-   display(${~~} built)
+   filename(~~)
+   display(${~~} has been built)
 }
 
 
